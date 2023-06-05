@@ -14,6 +14,6 @@ class KendaraanRepository implements KendaraanRepositoryInterface
 
     public function create(array $kendaraanDetail) 
     {
-        return Kendaraan::create($kendaraanDetail);
+        return Kendaraan::firstOrCreate($kendaraanDetail);
     }
 }

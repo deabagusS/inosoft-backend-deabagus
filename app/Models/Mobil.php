@@ -11,6 +11,6 @@ class Mobil extends Eloquent
     protected $collection = 'mobil';
 
     protected $fillable = [
-        'mesin', 'kapasitas_penumpang', 'tipe'
+        'mesin', 'kapasitas_penumpang', 'tipe', 'kendaraan_id', 'penjualan_id'
     ];
 }

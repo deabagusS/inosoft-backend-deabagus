@@ -11,6 +11,6 @@ class Motor extends Eloquent
     protected $collection = 'motor';
 
     protected $fillable = [
-        'mesin', 'tipe_suspensi', 'tipe_transmisi'
+        'mesin', 'tipe_suspensi', 'tipe_transmisi', 'kendaraan_id', 'penjualan_id'
     ];
 }
