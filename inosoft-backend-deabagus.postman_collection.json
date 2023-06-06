@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "9a51fc1e-0917-48e0-85b5-1683edce51b4",
+		"name": "inosoft-backend-deabagus",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18634650"
+	},
+	"item": [
+		{
+			"name": "auth login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"dea@gmail.com\",\r\n    \"password\":\"Password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nama\":\"bagus\",\r\n    \"email\":\"bagus@gmail.com\",\r\n    \"password\":\"Password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth get user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/auth/me",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/auth/logout",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth refresh",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/auth/refresh",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kendaraan stock",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"filter\":{\r\n        \"tahun_keluaran\":2020,\r\n        \"warna\":\"merah\",\r\n        \"kapasitas_penumpang\":4,\r\n        \"tipe\":\"Agya MT\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/kendaraan/stock",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"kendaraan",
+						"stock"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "kendaraan stock list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"page\":1,\r\n    \"perPage\":10,\r\n    \"filter\":{\r\n        \"tahun_keluaran\":2020,\r\n        \"warna\":\"putih\",\r\n        \"kapasitas_penumpang\":4,\r\n        \"tipe\":\"Agya MT\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/kendaraan/stock/list",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"kendaraan",
+						"stock",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "penjualan create",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"kendaraan_id\":\"647efb4d584a00007f00684a\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/penjualan/create",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"penjualan",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "penjualan jumlah",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"filter\":{\r\n        \"tahun_keluaran\":2020,\r\n        \"warna\":\"merah\",\r\n        \"kapasitas_penumpang\":4,\r\n        \"tipe\":\"Agya MT\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/penjualan/jumlah",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"penjualan",
+						"jumlah"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "penjualan list",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"page\":1,\r\n    \"perPage\":10,\r\n    \"filter\":{\r\n        \"tahun_keluaran\":2020,\r\n        \"warna\":\"putih\",\r\n        \"kapasitas_penumpang\":4,\r\n        \"tipe\":\"Agya MT\",\r\n        \"start_date\":\"05-06-2023\",\r\n        \"end_date\":\"30-12-2023\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/penjualan/list",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"penjualan",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
