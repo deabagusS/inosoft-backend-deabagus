@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Validator;
- 
+use Illuminate\Support\Facades\Hash;
  
 class AuthController extends Controller
 {
@@ -20,30 +20,34 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
  
- 
-    /**
-     * Register a User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function register() {
-        $validator = Validator::make(request()->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:8',
-        ]);
- 
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+    public function register()
+    {
+        $input = request()->post();
+
+        if(
+            isset($input['name']) &&
+            isset($input['email']) &&
+            isset($input['password'])
+        ) {
+            $userExist = User::where('email', $input['email'])->first();
+
+            if (!$userExist) {
+                $input['password'] = Hash::make($input['password']);
+                User::create($input)->first();
+
+                $this->message = 'Registrasi berhasil';
+                $this->status = true;
+            } else {
+                $this->message = 'Email sudah terdaftar, silahkan ganti';
+            }
+        } else {
+            $this->message = 'first_name, last_name, email, phone & password harus diisi';
         }
- 
-        $user = new User;
-        $user->name = request()->name;
-        $user->email = request()->email;
-        $user->password = bcrypt(request()->password);
-        $user->save();
- 
-        return response()->json($user, 201);
+
+        return response()->json([
+            'message' => $this->message,
+            'status' => $this->status
+        ]);
     }
  
  
