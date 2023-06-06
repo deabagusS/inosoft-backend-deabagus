@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-use App\Models\Motor;
-use App\Models\Mobil;
 
 class Kendaraan extends Eloquent
 {
@@ -24,13 +22,8 @@ class Kendaraan extends Eloquent
         'jenis'
     ];
 
-    // public function motor()
-    // {
-    //     return $this->hasMany(Motor::class, 'kendaraan_id', 'id');
-    // }
-
-    // public function mobil()
-    // {
-    //     return $this->hasMany(Mobil::class, 'kendaraan_id', 'id');
-    // }
+    protected $casts = [
+        'created_at' => 'date:d/m/Y H:i:s',
+        'updated_at' => 'date:d/m/Y H:i:s',
+    ];
 }

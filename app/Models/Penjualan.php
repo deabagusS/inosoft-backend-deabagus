@@ -24,4 +24,9 @@ class Penjualan extends Eloquent
         'telepon_pelanggan', 
         'alamat_pelanggan'
     ];
+
+    protected $casts = [
+        'created_at' => 'date:d/m/Y H:i:s',
+        'updated_at' => 'date:d/m/Y H:i:s',
+    ];
 }
