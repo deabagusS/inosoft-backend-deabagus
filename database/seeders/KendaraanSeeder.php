@@ -4,23 +4,15 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Interfaces\KendaraanRepositoryInterface;
-// use App\Interfaces\MobilRepositoryInterface;
-// use App\Interfaces\MotorRepositoryInterface;
 
 class KendaraanSeeder extends Seeder
 {
     private KendaraanRepositoryInterface $kendaraanRepository;
-    // private MobilRepositoryInterface $mobilRepository;
-    // private MotorRepositoryInterface $motorRepository;
 
     public function __construct(
         KendaraanRepositoryInterface $kendaraanRepository,
-        // MobilRepositoryInterface $mobilRepository,
-        // MotorRepositoryInterface $motorRepository
     ) {
         $this->kendaraanRepository = $kendaraanRepository;
-        // $this->mobilRepository = $mobilRepository;
-        // $this->motorRepository = $motorRepository;
     }
 
     /**
