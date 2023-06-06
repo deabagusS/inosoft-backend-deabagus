@@ -17,7 +17,7 @@ class AuthController extends Controller
         UserRepositoryInterface $userRepository,
     ) {
         $this->userRepository = $userRepository;
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'unauthorized']]);
     }
  
     public function register(): JsonResponse
@@ -52,18 +52,16 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
  
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json([
-                'credentials' => $credentials,
-                'error' => 'Unauthorized'], 401
-            );
+            return response()->json(setResponse(false, 'Login gagal'));
         }
- 
+        
         return $this->respondWithToken($token);
     }
  
     public function me(): JsonResponse
     {
-        return response()->json(auth()->user());
+        $data = auth()->user();
+        return response()->json(setResponse(true, '', $data->toArray()));
     }
     
     public function logout(): JsonResponse
@@ -78,12 +76,19 @@ class AuthController extends Controller
         return $this->respondWithToken(auth()->refresh());
     }
  
-    protected function respondWithToken($token): JsonResponse
+    protected function respondWithToken(string $token): JsonResponse
     {
-        return response()->json([
+        $data = [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        ];
+
+        return response()->json(setResponse(true, 'Login berhasil', $data));
+    }
+
+    public function unauthorized()
+    {
+        return response()->json(setResponse(false, 'Unauthorized'));
     }
 }

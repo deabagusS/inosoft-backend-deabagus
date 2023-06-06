@@ -20,7 +20,8 @@ if (!function_exists('setResponse')) {
             if (!empty($data)) 
                 $response['data'] = $data;
         } else {
-            $response['error'] = $data;
+            if (!empty($data)) 
+                $response['error'] = $data;
         }
         
         return $response;

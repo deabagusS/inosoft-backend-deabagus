@@ -4,10 +4,18 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Interfaces\UserRepositoryInterface;
 
 class UserSeeder extends Seeder
 {
+    private UserRepositoryInterface $userRepository;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+    ) {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Run the database seeds.
      *
@@ -15,13 +23,15 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $email = 'dea@gmai.com';
-        $user = User::firstOrNew(['email' => $email]);
+        $userDetail = [
+            'email' => 'dea',
+            'email' => 'dea@gmail.com',
+            'password' => Hash::make('Password123'),
+        ];
 
-        $user->nama = 'dea';
-        $user->email = $email;
-        $user->password = Hash::make('Password123');
-        
-        $user->save();
+        $userExist = $this->userRepository->userExist($userDetail['email']);
+            
+        if (!$userExist)
+            $this->userRepository->create($userDetail);
     }
 }

@@ -25,21 +25,27 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh');
-    Route::post('/me', [AuthController::class, 'me'])->name('me');
+    Route::get('/unauthorized', [AuthController::class, 'unauthorized'])->name('login');
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::post('/me', [AuthController::class, 'me']);
 });
 
-Route::controller(KendaraanController::class)->group(function () {
-    Route::get('kendaraan', 'index');
-    Route::get('kendaraan/stock', 'jumlahStock');
-    Route::post('kendaraan/create', 'create');
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'kendaraan'
+], function ($router) {
+    Route::get('list', [KendaraanController::class, 'index']);
+    Route::get('stock', [KendaraanController::class, 'jumlahStock']);
 });
 
-Route::controller(PenjualanController::class)->group(function () {
-    Route::get('penjualan', 'index');
-    Route::get('penjualan/jumlah', 'jumlahTerjual');
-    Route::post('penjualan/create', 'create');
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'penjualan'
+], function ($router) {
+    Route::get('list', [PenjualanController::class, 'index']);
+    Route::get('jumlah', [PenjualanController::class, 'jumlahTerjual']);
+    Route::post('create', [PenjualanController::class, 'create']);
 });
