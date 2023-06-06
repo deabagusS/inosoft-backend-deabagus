@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\PenjualanRepositoryInterface;
 use App\Models\Penjualan;
+use Carbon\Carbon;
 
 class PenjualanRepository implements PenjualanRepositoryInterface 
 {
@@ -11,7 +12,16 @@ class PenjualanRepository implements PenjualanRepositoryInterface
         $penjualan = Penjualan::query();
 
         foreach ($filter as $key => $value) {
-            $penjualan->where($key, $value);
+            switch ($key) {
+                case "start_date":
+                    $penjualan->where('created_at', '>=', Carbon::parse($value));
+                  break;
+                case "end_date":
+                    $penjualan->where('created_at', '<=', Carbon::parse(date('d-m-Y', strtotime($value. ' + 1 days'))));
+                  break;
+                default:
+                    $penjualan->where($key, $value);
+            }
         }
 
         return $penjualan;

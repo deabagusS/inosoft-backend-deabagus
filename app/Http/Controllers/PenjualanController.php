@@ -27,7 +27,9 @@ class PenjualanController extends Controller
             'kapasitas_penumpang', 
             'tipe', 
             'tipe_suspensi', 
-            'tipe_transmisi'
+            'tipe_transmisi',
+            'start_date',
+            'end_date'
         ];
     }
 
