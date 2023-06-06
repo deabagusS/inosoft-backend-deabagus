@@ -1,4 +1,4 @@
-# inosoft - backend test - Dea Bagus
+# INOSOFT - BACKEND TEST - DEA BAGUS SULAEMAN
 
 ## Development
 - Laravel 8.*
@@ -22,6 +22,6 @@
 - jika runing aplikasi berhasil secara default akan menggunakan port :8000 
 - selanjutnya bisa mengakses localhost:8000
 
-## note
+## Note
 - untuk collection postman sudah di sertakan juga didalam directory project. 
 - nama file **inosoft-backend-deabagus.postman_collection.json**
