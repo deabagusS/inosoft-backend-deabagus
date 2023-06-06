@@ -11,11 +11,19 @@ if (!function_exists('generateNoMesin')) {
 if (!function_exists('setResponse')) {
     function setResponse(bool $success, string $message, array $data = [])
     {
-        return [
+        $response = [
             'success' => $success,
             'message' => $message,
-            'data' => $data,
         ];
+        
+        if ($success === true){
+            if (!empty($data)) 
+                $response['data'] = $data;
+        } else {
+            $response['error'] = $data;
+        }
+        
+        return $response;
     }
 }
 
@@ -26,10 +34,11 @@ if (!function_exists('setResponseDataList')) {
         $message = (count($data[$listName]) < 1) ? 'Data tidak ditemukan' : '';
         $data = (count($data[$listName]) < 1) ? [] : $data;
 
-        return [
-            'success' => $success,
-            'message' => $message,
-            'data' => $data,
-        ];
+        return setResponse($success, $message, $data);
+        // return [
+        //     'success' => $success,
+        //     'message' => $message,
+        //     'data' => $data,
+        // ];
     }
 }

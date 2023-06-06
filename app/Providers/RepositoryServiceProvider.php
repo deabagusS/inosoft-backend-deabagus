@@ -8,6 +8,8 @@ use App\Interfaces\KendaraanRepositoryInterface;
 use App\Repositories\KendaraanRepository;
 use App\Interfaces\PenjualanRepositoryInterface;
 use App\Repositories\PenjualanRepository;
+use App\Interfaces\UserRepositoryInterface;
+use App\Repositories\UserRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(KendaraanRepositoryInterface::class, KendaraanRepository::class);
         $this->app->bind(PenjualanRepositoryInterface::class, PenjualanRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     /**

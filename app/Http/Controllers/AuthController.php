@@ -4,59 +4,50 @@ namespace App\Http\Controllers;
  
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
+use App\Interfaces\UserRepositoryInterface;
+use Validator;
  
 class AuthController extends Controller
 {
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
+    private UserRepositoryInterface $userRepository;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+    ) {
+        $this->userRepository = $userRepository;
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
  
-    public function register()
+    public function register(): JsonResponse
     {
-        $input = request()->post();
+        $rules = [
+            'nama' => 'required',
+            'email'=> 'required',
+            'password'=> 'required',
+        ];
 
-        if(
-            isset($input['name']) &&
-            isset($input['email']) &&
-            isset($input['password'])
-        ) {
-            $userExist = User::where('email', $input['email'])->first();
+        $validator = Validator::make(request()->all(), $rules);
 
-            if (!$userExist) {
-                $input['password'] = Hash::make($input['password']);
-                User::create($input)->first();
-
-                $this->message = 'Registrasi berhasil';
-                $this->status = true;
-            } else {
-                $this->message = 'Email sudah terdaftar, silahkan ganti';
-            }
+        if ($validator->fails()) {
+            return response()->json(setResponse(false, 'Parameter yang diinput belum sesuai', $validator->messages()->toArray()));
         } else {
-            $this->message = 'first_name, last_name, email, phone & password harus diisi';
-        }
+            $userDetail = request()->post();
+            $userExist = $this->userRepository->userExist($userDetail['email']);
+            
+            if (!$userExist) {
+                $userDetail['password'] = Hash::make($userDetail['password']);
+                $this->userRepository->create($userDetail);
 
-        return response()->json([
-            'message' => $this->message,
-            'status' => $this->status
-        ]);
+                return response()->json(setResponse(true, 'Registrasi berhasil', []));
+            } else {
+                return response()->json(setResponse(false, 'Email sudah terdaftar, silahkan ganti', []));
+            }
+        }
     }
- 
- 
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function login()
+  
+    public function login(): JsonResponse
     {
         $credentials = request(['email', 'password']);
  
@@ -70,46 +61,24 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
  
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
+    public function me(): JsonResponse
     {
         return response()->json(auth()->user());
     }
- 
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function logout()
+    
+    public function logout(): JsonResponse
     {
         auth()->logout();
  
         return response()->json(['message' => 'Successfully logged out']);
     }
- 
-    /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function refresh()
+     
+    public function refresh(): JsonResponse
     {
         return $this->respondWithToken(auth()->refresh());
     }
  
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token): JsonResponse
     {
         return response()->json([
             'access_token' => $token,
