@@ -17,7 +17,7 @@ class PenjualanListFailedTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user, 'api');
         
-        $response = $this->json('GET', route('penjualan-list'), [
+        $this->json('GET', route('penjualan-list'), [
             'filter' => [
                 'tahun_keluaran' => 1
             ]

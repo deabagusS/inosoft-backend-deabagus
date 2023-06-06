@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Models\User;
 
-class KendaraanStockListFailedTest extends TestCase
+class RegisterFailedExistUserTest extends TestCase
 {
     /**
      * A basic unit test example.
@@ -15,12 +15,11 @@ class KendaraanStockListFailedTest extends TestCase
     public function test_example()
     {
         $user = User::factory()->create();
-        $this->actingAs($user, 'api');
-        
-        $this->json('GET', route('kendaraan-stock-list'), [
-            'filter' => [
-                'tahun_keluaran' => 1
-            ]
+
+        $this->post(route('auth-register'), [
+            'nama' => $user->nama,
+            'email' => $user->email,
+            'password' => 'password'
         ])->assertStatus(400);
     }
 }
