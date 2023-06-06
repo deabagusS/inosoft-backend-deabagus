@@ -5,7 +5,7 @@
 - PHP 8.0.*
 - Mongodb 4.2.
 
-## API Dokumentation
+## API Dokumentasi
 - https://documenter.getpostman.com/view/18634650/2s93sZ5t8P
 
 ## Cara instalasi
