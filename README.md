@@ -23,5 +23,5 @@
 - selanjutnya bisa mengakses localhost:8000
 
 ## note
-untuk collection postman sudah di sertakan juga didalam directory project. 
-nama file inosoft-backend-deabagus.postman_collection.json
+- untuk collection postman sudah di sertakan juga didalam directory project. 
+- nama file **inosoft-backend-deabagus.postman_collection.json**
