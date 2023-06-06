@@ -4,23 +4,23 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Interfaces\KendaraanRepositoryInterface;
-use App\Interfaces\MobilRepositoryInterface;
-use App\Interfaces\MotorRepositoryInterface;
+// use App\Interfaces\MobilRepositoryInterface;
+// use App\Interfaces\MotorRepositoryInterface;
 
 class KendaraanSeeder extends Seeder
 {
     private KendaraanRepositoryInterface $kendaraanRepository;
-    private MobilRepositoryInterface $mobilRepository;
-    private MotorRepositoryInterface $motorRepository;
+    // private MobilRepositoryInterface $mobilRepository;
+    // private MotorRepositoryInterface $motorRepository;
 
     public function __construct(
         KendaraanRepositoryInterface $kendaraanRepository,
-        MobilRepositoryInterface $mobilRepository,
-        MotorRepositoryInterface $motorRepository
+        // MobilRepositoryInterface $mobilRepository,
+        // MotorRepositoryInterface $motorRepository
     ) {
         $this->kendaraanRepository = $kendaraanRepository;
-        $this->mobilRepository = $mobilRepository;
-        $this->motorRepository = $motorRepository;
+        // $this->mobilRepository = $mobilRepository;
+        // $this->motorRepository = $motorRepository;
     }
 
     /**
@@ -73,12 +73,12 @@ class KendaraanSeeder extends Seeder
                 ],
                 [
                     'harga' => 210000000,
-                    'kapasitas_penumpang' => 4,
+                    'kapasitas_penumpang' => 6,
                     'tipe' => 'Avanza Veloz MT',
                 ],
                 [
                     'harga' => 2500000000,
-                    'kapasitas_penumpang' => 4,
+                    'kapasitas_penumpang' => 6,
                     'tipe' => 'Avanza Veloz AT',
                 ],
             ]
@@ -88,33 +88,15 @@ class KendaraanSeeder extends Seeder
             foreach ($tahun as $tahunKey => $tahunItem) {
                 foreach ($kendaraan as $kendaraanKey => $kendaraanItem) {
                     foreach ($kendaraanItem as $value) {
-                        $kendaraanSave = $this->kendaraanRepository->create(
-                            [
-                                'tahun_keluaran'=> $tahunKey, 
-                                'warna'=> $warnaItem, 
-                                'harga'=> $value['harga'] + $tahunItem,
-                            ]
-                        );
-
-                        $kendaraanId = $kendaraanSave->id;
-                        if ($kendaraanKey === 'motor'){
-                            $this->motorRepository->create(
-                                [
-                                    'mesin' => generateNoMesin(10),
-                                    'tipe_suspensi' => $value['tipe_suspensi'], 
-                                    'tipe_transmisi' => $value['tipe_transmisi'], 
-                                    'kendaraan_id' => $kendaraanId,
-                                ]
-                            );
-                        } elseif ($kendaraanKey === 'mobil') {
-                            $this->mobilRepository->create(
-                                [
-                                    'mesin' => generateNoMesin(10),
-                                    'kapasitas_penumpang' => $value['kapasitas_penumpang'], 
-                                    'tipe' => $value['tipe'], 
-                                    'kendaraan_id' => $kendaraanId, 
-                                ]
-                            );
+                        for ($i=0; $i < 2; $i++) { 
+                            $kendaraanDetail = [];
+                            $kendaraanDetail = $value;
+                            $kendaraanDetail['harga'] = $value['harga'] + $tahunItem;
+                            $kendaraanDetail['tahun_keluaran'] = $tahunKey;
+                            $kendaraanDetail['warna'] = $warnaItem;
+                            $kendaraanDetail['mesin'] = generateNoMesin(10);
+                            $kendaraanDetail['jenis'] = $kendaraanKey;
+                            $this->kendaraanRepository->create($kendaraanDetail);
                         }
                     }
                 }

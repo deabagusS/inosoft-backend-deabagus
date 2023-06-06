@@ -4,13 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
-use App\Models\Motor;
-use App\Models\Mobil;
 
-class Kendaraan extends Eloquent
+class Penjualan extends Eloquent
 {
     protected $connection = 'mongodb';
-    protected $collection = 'kendaraan';
+    protected $collection = 'penjualan';
 
     protected $fillable = [
         'tahun_keluaran', 
@@ -21,16 +19,9 @@ class Kendaraan extends Eloquent
         'tipe', 
         'tipe_suspensi', 
         'tipe_transmisi', 
-        'jenis'
+        'jenis',
+        'nama_pelanggan', 
+        'telepon_pelanggan', 
+        'alamat_pelanggan'
     ];
-
-    // public function motor()
-    // {
-    //     return $this->hasMany(Motor::class, 'kendaraan_id', 'id');
-    // }
-
-    // public function mobil()
-    // {
-    //     return $this->hasMany(Mobil::class, 'kendaraan_id', 'id');
-    // }
 }
