@@ -50,3 +50,20 @@ if (!function_exists('setResponseDataList')) {
         return setResponse($success, $message, $data);
     }
 }
+
+if (!function_exists('getCodeResponse')) {
+    function getCodeResponse(bool $success, string $type): int
+    {
+        if ($type == 'get') {
+            if ($success === true) 
+                return 200;
+            else 
+                return 400;
+        } elseif ($type == 'post') {
+            if ($success === true) 
+                return 201;
+            else 
+                return 400;
+        }
+    }
+}

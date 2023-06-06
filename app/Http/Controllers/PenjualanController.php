@@ -39,7 +39,8 @@ class PenjualanController extends Controller
         $perPage = request()->post('perPage') ?? 10;
         $data = $this->penjualanRepository->getList(setFilterInput($this->filter, $inputFilter), $page, $perPage);
 
-        return response()->json(setResponseDataList($data, 'penjualan'));
+        $response = setResponseDataList($data, 'penjualan');
+        return response()->json($response, getCodeResponse($response['success'], 'get'));
     }
 
     public function jumlahTerjual(): JsonResponse 
@@ -47,7 +48,8 @@ class PenjualanController extends Controller
         $inputFilter = request()->post('filter') ?? [];
         $data = $this->penjualanRepository->jumlahTerjual(setFilterInput($this->filter, $inputFilter));
 
-        return response()->json(setResponse(true, '', $data));
+        $response = setResponse(true, '', $data);
+        return response()->json($response, getCodeResponse($response['success'], 'get'));
     }
 
     public function create(): JsonResponse 
@@ -59,7 +61,10 @@ class PenjualanController extends Controller
         $validator = Validator::make(request()->all(), $rules);
 
         if ($validator->fails()) {
-            return response()->json(setResponse(false, 'Parameter yang diinput belum sesuai', $validator->messages()->toArray()));
+            return response()->json(
+                setResponse(false, 'Parameter yang diinput belum sesuai', $validator->messages()->toArray()),
+                getCodeResponse(false, 'post')
+            );
         } else {
             $kendaraanId = request()->post('kendaraan_id');
             $kendaraan = $this->kendaraanRepository->find($kendaraanId);
@@ -74,13 +79,13 @@ class PenjualanController extends Controller
 
                 if ($data) {
                     $this->kendaraanRepository->delete($kendaraanId);
-
-                    return response()->json(setResponse(true, 'Simpan data penjualan berhasil'));
+                    
+                    return response()->json(setResponse(true, 'Simpan data penjualan berhasil'), getCodeResponse(true, 'post'));
                 } else {
-                    return response()->json(setResponse(false, 'App Server Error'));
+                    return response()->json(setResponse(false, 'App Server Error'), getCodeResponse(false, 'post'));
                 }
             } else {
-                return response()->json(setResponse(false, 'Data kendaraan tidak ditemukan'));
+                return response()->json(setResponse(false, 'Data kendaraan tidak ditemukan'), getCodeResponse(false, 'post'));
             }
         }
     }

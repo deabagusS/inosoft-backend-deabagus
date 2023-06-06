@@ -30,7 +30,7 @@ class AuthController extends Controller
         $validator = Validator::make(request()->all(), $rules);
 
         if ($validator->fails()) {
-            return response()->json(setResponse(false, 'Parameter yang diinput belum sesuai', $validator->messages()->toArray()));
+            return response()->json(setResponse(false, 'Parameter yang diinput belum sesuai', $validator->messages()->toArray()), 400);
         } else {
             $userDetail = request()->post();
             $userExist = $this->userRepository->userExist($userDetail['email']);
@@ -39,9 +39,9 @@ class AuthController extends Controller
                 $userDetail['password'] = Hash::make($userDetail['password']);
                 $this->userRepository->create($userDetail);
 
-                return response()->json(setResponse(true, 'Registrasi berhasil', []));
+                return response()->json(setResponse(true, 'Registrasi berhasil', []), 201);
             } else {
-                return response()->json(setResponse(false, 'Email sudah terdaftar, silahkan ganti', []));
+                return response()->json(setResponse(false, 'Email sudah terdaftar, silahkan ganti', []), 400);
             }
         }
     }
@@ -51,7 +51,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
  
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(setResponse(false, 'Login gagal'));
+            return response()->json(setResponse(false, 'Login gagal'), 400);
         }
         
         return $this->respondWithToken($token);
@@ -60,14 +60,14 @@ class AuthController extends Controller
     public function me(): JsonResponse
     {
         $data = auth()->user();
-        return response()->json(setResponse(true, '', $data->toArray()));
+        return response()->json(setResponse(true, '', $data->toArray()), 200);
     }
     
     public function logout(): JsonResponse
     {
         auth()->logout();
  
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Successfully logged out'], 200);
     }
      
     public function refresh(): JsonResponse
@@ -83,11 +83,11 @@ class AuthController extends Controller
             'expires_in' => auth()->factory()->getTTL() * 60
         ];
 
-        return response()->json(setResponse(true, 'Login berhasil', $data));
+        return response()->json(setResponse(true, 'Login berhasil', $data), 200);
     }
 
     public function unauthorized(): JsonResponse
     {
-        return response()->json(setResponse(false, 'Unauthorized'));
+        return response()->json(setResponse(false, 'Unauthorized'), 401);
     }
 }

@@ -31,7 +31,8 @@ class KendaraanController extends Controller
         $perPage = request()->post('perPage') ?? 10;
         $data = $this->kendaraanRepository->getList(setFilterInput($this->filter, $inputFilter), $page, $perPage);
 
-        return response()->json(setResponseDataList($data, 'kendaraan'));
+        $response = setResponseDataList($data, 'kendaraan');
+        return response()->json($response, getCodeResponse($response['success'], 'get'));
     }
 
     public function jumlahStock(): JsonResponse 
@@ -39,6 +40,7 @@ class KendaraanController extends Controller
         $inputFilter = request()->post('filter') ?? [];
         $data = $this->kendaraanRepository->jumlahStock(setFilterInput($this->filter, $inputFilter));
 
-        return response()->json(setResponse(true, '', $data));
+        $response = setResponse(true, '', $data);
+        return response()->json($response, getCodeResponse($response['success'], 'get'));
     }
 }
