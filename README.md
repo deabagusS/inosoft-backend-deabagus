@@ -3,7 +3,7 @@
 ## Development
 - Laravel 8.*
 - PHP 8.0.*
-- Mongodb 4.2.
+- Mongodb 4.2.*
 
 ## API Dokumentasi
 - https://documenter.getpostman.com/view/18634650/2s93sZ5t8P
