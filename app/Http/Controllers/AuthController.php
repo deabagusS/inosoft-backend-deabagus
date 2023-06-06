@@ -2,7 +2,6 @@
  
 namespace App\Http\Controllers;
  
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
@@ -87,7 +86,7 @@ class AuthController extends Controller
         return response()->json(setResponse(true, 'Login berhasil', $data));
     }
 
-    public function unauthorized()
+    public function unauthorized(): JsonResponse
     {
         return response()->json(setResponse(false, 'Unauthorized'));
     }

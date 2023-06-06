@@ -87,7 +87,6 @@ class KendaraanSeeder extends Seeder
                             $kendaraanDetail['tahun_keluaran'] = $tahunKey;
                             $kendaraanDetail['warna'] = $warnaItem;
                             $kendaraanDetail['mesin'] = generateNoMesin(10);
-                            $kendaraanDetail['jenis'] = $kendaraanKey;
                             $this->kendaraanRepository->create($kendaraanDetail);
                         }
                     }

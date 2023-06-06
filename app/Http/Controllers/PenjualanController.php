@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Interfaces\PenjualanRepositoryInterface;
 use App\Interfaces\KendaraanRepositoryInterface;
@@ -33,43 +32,40 @@ class PenjualanController extends Controller
         ];
     }
 
-    public function index(Request $request): JsonResponse 
+    public function index(): JsonResponse 
     {
-        $filter = $request->only($this->filter);
-        $page = $request->post('page') ?? 1;
-        $perPage = $request->post('perPage') ?? 10;
-        $data = $this->penjualanRepository->getList($filter, $page, $perPage);
+        $inputFilter = request()->post('filter') ?? [];
+        $page = request()->post('page') ?? 1;
+        $perPage = request()->post('perPage') ?? 10;
+        $data = $this->penjualanRepository->getList(setFilterInput($this->filter, $inputFilter), $page, $perPage);
 
         return response()->json(setResponseDataList($data, 'penjualan'));
     }
 
-    public function jumlahTerjual(Request $request): JsonResponse 
+    public function jumlahTerjual(): JsonResponse 
     {
-        $filter = $request->only($this->filter);
-        $data = $this->penjualanRepository->jumlahTerjual($filter);
+        $inputFilter = request()->post('filter') ?? [];
+        $data = $this->penjualanRepository->jumlahTerjual(setFilterInput($this->filter, $inputFilter));
 
         return response()->json(setResponse(true, '', $data));
     }
 
-    public function create(Request $request): JsonResponse 
+    public function create(): JsonResponse 
     {
         $rules = [
             'kendaraan_id' => 'required',
-            'nama_pelanggan'=> 'required',
-            'telepon_pelanggan'=> 'required',
-            'alamat_pelanggan'=> 'required',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make(request()->all(), $rules);
 
         if ($validator->fails()) {
             return response()->json(setResponse(false, 'Parameter yang diinput belum sesuai', $validator->messages()->toArray()));
         } else {
-            $kendaraanId = $request->post('kendaraan_id');
+            $kendaraanId = request()->post('kendaraan_id');
             $kendaraan = $this->kendaraanRepository->find($kendaraanId);
 
             if ($kendaraan) {
-                $pelangganDetail = $request->only(array_keys($rules));
+                $pelangganDetail = request()->only(array_keys($rules));
                 foreach ($pelangganDetail as $key => $value) {
                     $kendaraan->$key = $value;
                 }

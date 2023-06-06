@@ -22,30 +22,29 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group([
-    'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
     Route::get('/unauthorized', [AuthController::class, 'unauthorized'])->name('login');
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::post('/me', [AuthController::class, 'me']);
+    Route::post('/register', [AuthController::class, 'register'])->name('auth-register');
+    Route::post('/login', [AuthController::class, 'login'])->name('auth-login');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('auth-logout');
+    Route::post('/refresh', [AuthController::class, 'refresh'])->name('auth-refresh');
+    Route::post('/me', [AuthController::class, 'me'])->name('auth-me');
 });
 
 Route::group([
-    'middleware' => 'api',
+    'middleware' => 'auth:api',
     'prefix' => 'kendaraan'
 ], function ($router) {
-    Route::get('list', [KendaraanController::class, 'index']);
-    Route::get('stock', [KendaraanController::class, 'jumlahStock']);
+    Route::get('stock', [KendaraanController::class, 'jumlahStock'])->name('kendaraan-stock');
+    Route::get('stock/list', [KendaraanController::class, 'list'])->name('kendaraan-stock-list');
 });
 
 Route::group([
-    'middleware' => 'api',
+    'middleware' => 'auth:api',
     'prefix' => 'penjualan'
 ], function ($router) {
-    Route::get('list', [PenjualanController::class, 'index']);
-    Route::get('jumlah', [PenjualanController::class, 'jumlahTerjual']);
-    Route::post('create', [PenjualanController::class, 'create']);
+    Route::post('create', [PenjualanController::class, 'create'])->name('penjualan-create');
+    Route::get('jumlah', [PenjualanController::class, 'jumlahTerjual'])->name('penjualan-jumlah');
+    Route::get('list', [PenjualanController::class, 'index'])->name('penjualan-list');
 });

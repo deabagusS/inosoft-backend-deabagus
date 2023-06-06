@@ -8,8 +8,20 @@ if (!function_exists('generateNoMesin')) {
     }
 }
 
+if (!function_exists('setFilterInput')) {
+    function setFilterInput(array $filter, array $input): array
+    {
+        foreach ($input as $key => $value) {
+            if (! in_array($key, $filter))
+                unset($input[$key]);
+        }
+        
+        return $input;
+    }
+}
+
 if (!function_exists('setResponse')) {
-    function setResponse(bool $success, string $message, array $data = [])
+    function setResponse(bool $success, string $message, array $data = []): array
     {
         $response = [
             'success' => $success,
@@ -29,17 +41,12 @@ if (!function_exists('setResponse')) {
 }
 
 if (!function_exists('setResponseDataList')) {
-    function setResponseDataList(array $data, string $listName)
+    function setResponseDataList(array $data, string $listName): array
     {
         $success = (count($data[$listName]) < 1) ? false : true;
         $message = (count($data[$listName]) < 1) ? 'Data tidak ditemukan' : '';
         $data = (count($data[$listName]) < 1) ? [] : $data;
 
         return setResponse($success, $message, $data);
-        // return [
-        //     'success' => $success,
-        //     'message' => $message,
-        //     'data' => $data,
-        // ];
     }
 }

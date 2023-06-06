@@ -46,8 +46,8 @@ class PenjualanRepository implements PenjualanRepositoryInterface
     {
         $penjualan = $this->filterPenjualan($filter);
         $penjualanClone = clone $penjualan;
-        $jumlah_motor = $penjualan->where('jenis', 'motor')->count(); 
-        $jumlah_mobil = $penjualanClone->where('jenis', 'mobil')->count(); 
+        $jumlah_motor = $penjualan->whereNotNull('tipe_suspensi')->orWhereNotNull('tipe_transmisi')->count(); 
+        $jumlah_mobil = $penjualanClone->whereNotNull('kapasitas_penumpang')->orWhereNotNull('tipe')->count(); 
 
         return [
             'jumlah_total' => $jumlah_motor + $jumlah_mobil,

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Interfaces\KendaraanRepositoryInterface;
 
@@ -13,23 +12,32 @@ class KendaraanController extends Controller
     public function __construct(KendaraanRepositoryInterface $kendaraanRepository) 
     {
         $this->kendaraanRepository = $kendaraanRepository;
-        $this->filter = ['tahun_keluaran', 'warna', 'harga', 'mesin', 'kapasitas_penumpang', 'tipe', 'tipe_suspensi', 'tipe_transmisi'];
+        $this->filter = [
+            'tahun_keluaran', 
+            'warna', 
+            'harga', 
+            'mesin', 
+            'kapasitas_penumpang', 
+            'tipe', 
+            'tipe_suspensi', 
+            'tipe_transmisi'
+        ];
     }
 
-    public function index(Request $request): JsonResponse 
+    public function list(): JsonResponse 
     {
-        $filter = $request->only($this->filter);
-        $page = $request->post('page') ?? 1;
-        $perPage = $request->post('perPage') ?? 10;
-        $data = $this->kendaraanRepository->getList($filter, $page, $perPage);
+        $inputFilter = request()->post('filter') ?? [];
+        $page = request()->post('page') ?? 1;
+        $perPage = request()->post('perPage') ?? 10;
+        $data = $this->kendaraanRepository->getList(setFilterInput($this->filter, $inputFilter), $page, $perPage);
 
         return response()->json(setResponseDataList($data, 'kendaraan'));
     }
 
-    public function jumlahStock(Request $request): JsonResponse 
+    public function jumlahStock(): JsonResponse 
     {
-        $filter = $request->only($this->filter);
-        $data = $this->kendaraanRepository->jumlahStock($filter);
+        $inputFilter = request()->post('filter') ?? [];
+        $data = $this->kendaraanRepository->jumlahStock(setFilterInput($this->filter, $inputFilter));
 
         return response()->json(setResponse(true, '', $data));
     }

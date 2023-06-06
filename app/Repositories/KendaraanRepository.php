@@ -41,8 +41,8 @@ class KendaraanRepository implements KendaraanRepositoryInterface
     {
         $kendaraan = $this->filterKendaraan($filter);
         $kendaraanClone = clone $kendaraan;
-        $jumlah_motor = $kendaraan->where('jenis', 'motor')->count(); 
-        $jumlah_mobil = $kendaraanClone->where('jenis', 'mobil')->count(); 
+        $jumlah_motor = $kendaraan->whereNotNull('tipe_suspensi')->orWhereNotNull('tipe_transmisi')->count(); 
+        $jumlah_mobil = $kendaraanClone->whereNotNull('kapasitas_penumpang')->orWhereNotNull('tipe')->count(); 
 
         return [
             'jumlah_total' => $jumlah_motor + $jumlah_mobil,

@@ -18,11 +18,7 @@ class Penjualan extends Eloquent
         'kapasitas_penumpang', 
         'tipe', 
         'tipe_suspensi', 
-        'tipe_transmisi', 
-        'jenis',
-        'nama_pelanggan', 
-        'telepon_pelanggan', 
-        'alamat_pelanggan'
+        'tipe_transmisi'
     ];
 
     protected $casts = [
